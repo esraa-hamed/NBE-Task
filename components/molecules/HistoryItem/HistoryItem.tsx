@@ -14,6 +14,7 @@ interface HistoryItemProps {
    price: string;
    shop: boolean;  // 1:shop   // 2:user
    marginBottom: number;
+   darkMode: boolean;
 }
 
 function HistoryItem(props: HistoryItemProps): React.JSX.Element {
@@ -31,12 +32,12 @@ function HistoryItem(props: HistoryItemProps): React.JSX.Element {
                     </View>
                 )}
                 <View style={styles.leftViewText}>
-                    <Text style={styles.nameText}>{props.name}</Text>
+                    <Text style={props.darkMode ? styles.nameTextDark : styles.nameText}>{props.name}</Text>
                     <Text style={styles.dateText}>{props.date}</Text>
                 </View>
             </View>
             <View style={styles.rightView}>
-                <Text style={styles.priceText}>${props.price}</Text>
+                <Text style={props.darkMode ? styles.priceTextDark : styles.priceText}>${props.price}</Text>
             </View>
         </View>
     );
@@ -96,8 +97,18 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: '700',
     },
+    priceTextDark: {
+        color: '#e6f0f5',
+        fontSize: 18,
+        fontWeight: '700',
+    },
     nameText:{
         color: "#1C2437",
+        fontSize: 18,
+        fontWeight: '400',
+    },
+    nameTextDark:{
+        color: "#FFFF",
         fontSize: 18,
         fontWeight: '400',
     },
@@ -105,7 +116,8 @@ const styles = StyleSheet.create({
         color: "#B7B7B7",
         fontSize: 14,
         fontWeight: '400'
-    }
+    },
+    
 })
 
 export default HistoryItem;

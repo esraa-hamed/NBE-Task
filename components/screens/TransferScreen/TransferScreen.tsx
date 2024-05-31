@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import {
     StyleSheet,
     TouchableOpacity,
@@ -16,10 +16,18 @@ import {
   import Icon from 'react-native-vector-icons/FontAwesome5';
   import InputBox from '../../molecules/InputBox/InputBox';
   import Button from '../../atoms/Button/Button';
-
+  import { useNavigation } from '@react-navigation/native';
   
+  import { ModeContext } from '../../../Context';
+  import { OptionContext } from '../../../Context';
 
-  function TransferScreen(): React.JSX.Element {
+  interface transferProps {
+    mobileNumber: string;
+    // darkMode: boolean;
+  }
+
+  function TransferScreen(props: transferProps): React.JSX.Element {
+
     const [transferTypeFocused, setTransferTypeFocused] = useState(false);
     const [transferFromFocused, setTransferFromFocused] = useState(false);
     const [transferToFocused, setTransferToFocused] = useState(false);
@@ -44,7 +52,15 @@ import {
     const [amountTitleColor, setAmountTitleColor] = useState('#B7B7B7');
     const [reasonTitleColor, setReasonTitleColor] = useState('#B7B7B7');
 
+    const { darkMode } = useContext(ModeContext);
+    const { setDarkMode } = useContext(ModeContext);
+
+    const {optionNumber} = useContext(OptionContext);
+    const {setOptionNumber} = useContext(OptionContext);
+
     const [buttonActive, setButtonActive] = useState(false);
+
+    const navigation = useNavigation() ;
 
     const handleTransferTypeFocus = () => {
       setTransferTypeFocused(true);
@@ -162,15 +178,16 @@ import {
     }
 
     const handleGoingBack = () => {
-
+      setOptionNumber(1);
+      navigation.navigate('HomeNavigation', {optionSelected: 1, firstName: 'Ahmed', imageUrl: 'https://firebasestorage.googleapis.com/v0/b/bank-task-7a340.appspot.com/o/home_user_image.png?alt=media&token=1d81fbc3-1b74-40aa-b977-2dfac6870d59', currentBalance:'2,374,654.25', mobileNumber: '+201143333206'});
     }
 
     const handleTransferButtonClick = () =>{
-
+      navigation.navigate('Verification', {mobileNumber: props.mobileNumber, parentName: 'Transfer', darkMode: darkMode});
     }
 
     return(
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={darkMode ? styles.containerDark : styles.container}>
         <ScrollView style={styles.verticalScrollView} showsVerticalScrollIndicator={false}>
         <View style={styles.transferFirstSection}>
             <TouchableOpacity onPress={handleGoingBack}>
@@ -183,7 +200,7 @@ import {
 
         <View style={styles.mainContainer}>
             <View style={styles.transferSecondSection}>
-              <Text style={styles.transferTitleOne}>Transfer</Text>
+              <Text style={darkMode ? styles.transferTitleOneDark : styles.transferTitleOne}>Transfer</Text>
               <View style={styles.pickerView}>
               <RNPickerSelect
                             placeholder={{label: 'Type of transfer', value: null}}
@@ -254,23 +271,23 @@ import {
                  
                 />
                 </View>
-                <InputBox placeholder='Amount to transfer' isPassword={false} inputFocused={transferAmountFocused} inputValue={transferAmountValue} icon={null}
+                <InputBox placeholder='Enter amount to transfer' isPassword={false} inputFocused={transferAmountFocused} inputValue={transferAmountValue} icon={null}
                         borderColor={'#007236'}
                         numericInput={true}
                         fontColor={'black'}
                         placeholderColor={'#B7B7B7'}
-                        titleTop={amountTitleValue}
+                        titleTop={'Amount to transfer'}
                         titleColor={amountTitleColor}
                         backgroundColor={'white'}
                         onFocus={handleTransferAmountFocus}
                         onBlur={handleTransferAmountBlur}
                         onChangeText={ (newText: string) => handleTransferAmountChange(newText)}>
               </InputBox>
-                <InputBox placeholder='Reason of transfer' isPassword={false} inputFocused={transferReasonFocused} inputValue={transferReasonValue} icon={null}
+                <InputBox placeholder='Enter reason of transfer' isPassword={false} inputFocused={transferReasonFocused} inputValue={transferReasonValue} icon={null}
                         borderColor={'#007236'}
                         fontColor={'black'}
                         placeholderColor={'#B7B7B7'}
-                        titleTop={reasonTitleValue}
+                        titleTop={'Reason of transfer'}
                         titleColor={reasonTitleColor}
                         backgroundColor={'white'}
                         onFocus={handleTransferReasonFocus}
@@ -296,6 +313,11 @@ import {
       backgroundColor: '#F1F3FB',
       flex: 1,
       paddingHorizontal: 20,
+    },
+    containerDark: {
+      flex:1,
+      backgroundColor: '#2E2E2E',
+      paddingHorizontal: 20
     },
     verticalScrollView: {
         flexGrow: 1,
@@ -332,6 +354,11 @@ import {
     },
     transferTitleOne: {
       color: '#1C2437',
+      fontSize: 29,
+      fontWeight: '700',
+    },
+    transferTitleOneDark: {
+      color: '#FFFF',
       fontSize: 29,
       fontWeight: '700',
     },

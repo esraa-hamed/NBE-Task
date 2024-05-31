@@ -1,0 +1,45 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "fonts/GemunuLibre-Bold.ttf",
+      "sha1": "661072c62e132114df3581a19f142f0b60b67d35"
+    },
+    {
+      "path": "fonts/GemunuLibre-Medium.ttf",
+      "sha1": "219f4453e35abe6bc37e6ca6666c712523db0844"
+    },
+    {
+      "path": "fonts/GemunuLibre-Regular.ttf",
+      "sha1": "bac4d38efd5fd73b41a9fac4fb1a9b802784c0da"
+    },
+    {
+      "path": "fonts/Roboto-Bold.ttf",
+      "sha1": "62442a18a9fe9457c1afeabf683d263a691b7798"
+    },
+    {
+      "path": "fonts/Roboto-Medium.ttf",
+      "sha1": "3c6a09fcc6a454924c81af7dff94fc6d399ed79b"
+    },
+    {
+      "path": "fonts/Roboto-Regular.ttf",
+      "sha1": "56c5c0d38bde4c1f1549dda43db37b09c608aad3"
+    },
+    {
+      "path": "fonts/fa-brands-400.ttf",
+      "sha1": "acbbe78b63ab309cd560dc712a5dd2d5301d14ff"
+    },
+    {
+      "path": "fonts/fa-regular-400.ttf",
+      "sha1": "1be2221004a9cf752ccdc0ef2c7fa2132caedee7"
+    },
+    {
+      "path": "fonts/fa-solid-900.ttf",
+      "sha1": "cfc895e58274a80da7fd5bc3d629c7c918d70e2e"
+    },
+    {
+      "path": "fonts/fa-v4compatibility.ttf",
+      "sha1": "27a74685ce8ff178a2199f1dea5671516e7f67ff"
+    }
+  ]
+}

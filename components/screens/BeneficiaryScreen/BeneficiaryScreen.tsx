@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {
     Image,
     SafeAreaView,
@@ -10,15 +10,26 @@ import {
     Touchable,
     FlatList
   } from 'react-native';
+  import { useNavigation } from '@react-navigation/native';
 
   import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
   import IonIcon from 'react-native-vector-icons/Ionicons';
   import UserCard from '../../molecules/UserCard/UserCard';
   import UserInformation from '../../molecules/UserInformation/UserInformation';
+  import { ModeContext } from '../../../Context';
+
+  interface BeneficiaryProps {
+    darkMode: boolean;
+  }
 
   function BeneficiaryScreen(): React.JSX.Element {
 
     const bInformationEmpty = [];
+
+    const navigation = useNavigation();
+
+    const { darkMode } = useContext(ModeContext);
+    const { setDarkMode } = useContext(ModeContext);
 
     const bInformation = [
         {
@@ -120,7 +131,9 @@ import {
     }
 
     const handleAddBeneficiary = () => {
-
+        // navigation.navigate('AddBeneficiary');
+        navigation.navigate('HomeNavigation', {optionSelected: 3, firstName: 'Ahmed', imageUrl: 'https://firebasestorage.googleapis.com/v0/b/bank-task-7a340.appspot.com/o/home_user_image.png?alt=media&token=1d81fbc3-1b74-40aa-b977-2dfac6870d59', currentBalance:'2,374,654.25', mobileNumber: '+201143333206', beneficiaryPage: 'Add'});
+    
     }
 
     const chunkArray = (array: any[], size: number) => {
@@ -131,12 +144,16 @@ import {
         return chunkedArr;
     };
 
+    const handleBeneficiaryClick = (name: string, number: string, balance: string, image: string) => {
+        const beneficiaryInfo = {name: name, number: number, balance: balance, image: image};
+        navigation.navigate('HomeNavigation', {optionSelected: 3, firstName: 'Ahmed', imageUrl: 'https://firebasestorage.googleapis.com/v0/b/bank-task-7a340.appspot.com/o/home_user_image.png?alt=media&token=1d81fbc3-1b74-40aa-b977-2dfac6870d59', currentBalance:'2,374,654.25', mobileNumber: '+201143333206', beneficiaryPage: 'History', beneficiaryInfo: beneficiaryInfo});
+    }
+
     return(
-        <SafeAreaView style={styles.container}>
-            {/* <ScrollView style={styles.verticalScrollView} showsVerticalScrollIndicator={false}> */}
+        <SafeAreaView style={darkMode ? styles.containerDark : styles.container}>
 
                     <View style={styles.beneficiaryFirstSection}>
-                        <Text style={styles.beneficiaryTitleOne}>Beneficiaries</Text>
+                        <Text style={darkMode ? styles.beneficiaryTitleOneDark : styles.beneficiaryTitleOne}>Beneficiaries</Text>
                         <View style={styles.firstSectionIcons}>
                             <View style={styles.firstSectionIconOne}>
                                 <TouchableOpacity onPress={handleOptionOneClick}>
@@ -153,7 +170,7 @@ import {
                                     </View>
                                 </TouchableOpacity>
                             </View>
-                            <TouchableOpacity>
+                            <TouchableOpacity onPress={handleAddBeneficiary}>
                                 <View style={styles.firstSectionIconTwo}>
                                     <IonIcon name="add-circle-outline" size={22} color={"#007236"}/> 
                                     <Text style={styles.iconTwoText}>Add</Text>
@@ -165,8 +182,8 @@ import {
                 {bInformation.length==0 && (
                     <View style={styles.mainContainerEmpty}>
                         <Image source={require("../../../images/beneficiaries_img.png")}></Image>
-                        <Text style={styles.emptyTextTitle}>No Beneficiaries</Text>
-                        <Text style={styles.emptyTextParagraph}>You don’t have beneficiaries, add some so you can send money</Text>
+                        <Text style={darkMode ? styles.emptyTextTitleDark : styles.emptyTextTitle }>No Beneficiaries</Text>
+                        <Text style={darkMode ? styles.emptyTextParagraphDark : styles.emptyTextParagraph }>You don’t have beneficiaries, add some so you can send money</Text>
                         <TouchableOpacity onPress={handleAddBeneficiary}>
                                 <View style={styles.addBeneficiaryView}>
                                     <IonIcon name="add-circle-outline" size={22} color={"white"}/> 
@@ -181,11 +198,13 @@ import {
                         {chunkArray(bInformation,4).map((row, rowIndex)=> (
                             <View key={rowIndex} style={styles.rowView}>
                                 {row.map((item, itemIndex)=> (
-                                    <UserCard key={itemIndex} 
-                                        username={item.name} 
-                                        imageUrl={item.image} 
-                                        imageStyle='contain'
-                                        marginRight={10}/>
+                                    <TouchableOpacity onPress={() => handleBeneficiaryClick(item.name, item.number, item.balance, item.image)}>
+                                        <UserCard key={itemIndex} 
+                                              username={item.name} 
+                                              imageUrl={item.image} 
+                                              imageStyle='contain'
+                                              marginRight={10}/>
+                                    </TouchableOpacity>
                                 ))}
                             </View>
                         ))} 
@@ -196,11 +215,14 @@ import {
                     <ScrollView style={styles.verticalScrollViewTwo} showsVerticalScrollIndicator={false}>
                     {bInformation.map((data, dataIndex)=> (
                        <View style={{marginTop: 10}}>
-                                <UserInformation key={dataIndex}
-                                        username={data.name}
-                                        number={data.number}
-                                        balance={data.balance}
-                                        imageUrl={data.image}/>
+                                <TouchableOpacity onPress={() => handleBeneficiaryClick(data.name, data.number, data.balance, data.image)}>
+                                    <UserInformation key={dataIndex}
+                                                     username={data.name}
+                                                     number={data.number}
+                                                     balance={data.balance}
+                                                     imageUrl={data.image}
+                                            />
+                                </TouchableOpacity>
                        </View>
                     ))}
                 </ScrollView>
@@ -214,6 +236,11 @@ import {
     container: {
         flex:1,
         backgroundColor: '#F1F3FB',
+        paddingHorizontal: 25
+    },
+    containerDark: {
+        flex:1,
+        backgroundColor: '#2E2E2E',
         paddingHorizontal: 25
     },
     verticalScrollView: {
@@ -231,10 +258,14 @@ import {
         flexDirection: 'row',
         justifyContent: 'space-between',
         marginTop: 20,
-
     },
     beneficiaryTitleOne: {
         color: '#1C2437',
+        fontSize: 20,
+        fontWeight: '700',
+    },
+    beneficiaryTitleOneDark: {
+        color: 'white',
         fontSize: 20,
         fontWeight: '700',
     },
@@ -301,6 +332,18 @@ import {
     },
     emptyTextParagraph: {
         color: '#464665',
+        fontSize: 14,
+        fontWeight: '400',
+        textAlign: 'center',
+        width: 240,
+    },
+    emptyTextTitleDark: {
+        color: "white",
+        fontWeight: '500',
+        fontSize: 18,
+    },
+    emptyTextParagraphDark: {
+        color: 'white',
         fontSize: 14,
         fontWeight: '400',
         textAlign: 'center',

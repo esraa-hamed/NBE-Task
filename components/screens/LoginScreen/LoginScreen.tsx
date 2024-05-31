@@ -1,13 +1,10 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {
     Image,
     ImageBackground,
     SafeAreaView,
-    ScrollView,
-    StatusBar,
     StyleSheet,
     Text,
-    TextInput,
     TouchableOpacity,
     useColorScheme,
     View,
@@ -15,10 +12,6 @@ import {
 
   import {
     Colors,
-    DebugInstructions,
-    Header,
-    LearnMoreLinks,
-    ReloadInstructions,
   } from 'react-native/Libraries/NewAppScreen';
 
 
@@ -30,13 +23,22 @@ import {
   import Icon5 from 'react-native-vector-icons/FontAwesome5'
   import EvilIcon from 'react-native-vector-icons/EvilIcons';
 
+  import { ModeContext } from '../../../Context';
+
 
   function LoginScreen({navigation}): React.JSX.Element {
 
-    const isDarkMode = useColorScheme() === 'dark';
-    const backgroundStyle = {
-        backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-    };
+    const usersDara = [
+      {
+        username: 'Esraa',
+        password: 'Esraa@pass1'
+      }
+    ];
+
+    // const isDarkMode = useColorScheme() === 'dark';
+    // const backgroundStyle = {
+    //     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+    // };
 
     const [appLoaded, setAppLoaded] = useState(false);
     const [forgotPasswordClicked, setForgotPasswordClicked] = useState(false);
@@ -48,6 +50,9 @@ import {
     const [titleOneColor, setTitleOneColor] = useState('#FFFF');
     const [titleTwoColor, setTitleTwoColor] = useState('#FFFF');
     const [buttonActive, setButtonActive] = useState(false);
+
+    const { darkMode } = useContext(ModeContext);
+    const { setDarkMode } = useContext(ModeContext);
 
     const handleInputOneFocus = () => {
         setInputOneFocused(true);
@@ -88,7 +93,7 @@ import {
         setForgotPasswordClicked(!forgotPasswordClicked);
     }
     const handleLoginButtonClick = () => {
-        
+      navigation.navigate('HomeNavigation', {optionSelected: undefined, firstName: 'Ahmed', imageUrl: 'https://firebasestorage.googleapis.com/v0/b/bank-task-7a340.appspot.com/o/home_user_image.png?alt=media&token=1d81fbc3-1b74-40aa-b977-2dfac6870d59', currentBalance:'2,374,654.25', mobileNumber: '+201143333206', beneficiaryPage: 'List'});
     }
 
     const handleSignup = () => {
@@ -110,8 +115,10 @@ import {
         }, 3000); 
       }, []);
 
+      const backgroundColor = darkMode ?  '#2E2E2E': '#F1F3FB';
+
     return(
-        <SafeAreaView style={appLoaded ? styles.container : styles.splashContainer}>
+        <SafeAreaView style={appLoaded ? styles.container : {flex:1, backgroundColor}}>
             {appLoaded ? (
             <View style={styles.mainContainer}>
                 <ImageBackground source={require('../../../images/home_background_img2.png')}
@@ -210,7 +217,7 @@ import {
 
             </View>
             ) : (
-            <View style={styles.splashMainContainer}>
+            <View style={darkMode ? styles.splashMainContainerDark : styles.splashMainContainer}>
                 <Image source={require('../../../images/splash_screen_img1.png')}/>
                 <Image source={require('../../../images/splash_screen_img2.png')}/>
             </View>
@@ -230,12 +237,25 @@ import {
       backgroundColor: '#F1F3FB',
       flex: 1
       },
+      splashContainerDark: {
+        backgroundColor: '#2E2E2E',
+        flex: 1
+        },
     splashMainContainer: {
       display: 'flex',
       flexDirection: 'column',
       justifyContent: 'space-around',
       alignItems: 'center',
       backgroundColor: '#F1F3FB',
+      flex: 1,
+      paddingTop: 210
+    },
+    splashMainContainerDark: {
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'space-around',
+      alignItems: 'center',
+      backgroundColor: '#2E2E2E',
       flex: 1,
       paddingTop: 210
     },

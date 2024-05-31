@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {
     Image,
     SafeAreaView,
@@ -14,16 +14,27 @@ import {
   import UserCard from '../../molecules/UserCard/UserCard';
   import HistoryItem from '../../molecules/HistoryItem/HistoryItem';
   import AntDesignIcon from 'react-native-vector-icons/AntDesign';
+  import VisaCard from '../../atoms/VisaCard/VisaCard';
+
+  import { ModeContext } from '../../../Context';
 
   interface HomeProps{
     firstName: string;
     imageUrl: string;
     currentBalance: string;
+    // darkMode: boolean;
   }
 
   function Home(props: HomeProps): React.JSX.Element {
 
+    const [cardClicked, setCardClicked] = useState(false);
+    const { darkMode } = useContext(ModeContext);
+    const { setDarkMode } = useContext(ModeContext);
+
     
+    const handleCardClick = () => {
+        setCardClicked(true);
+    }
 
     const userInformation = [
         {
@@ -87,63 +98,91 @@ import {
        
     ];
     return(
-        <SafeAreaView style={styles.container}>
+        <SafeAreaView style={[styles.container, darkMode ? styles.darkModeBackground : styles.normalModeBackground]}>
             <ScrollView style={styles.verticalScrollView} showsVerticalScrollIndicator={false}>
 
-            <View style={styles.secondSection}>
-                <Image style={styles.cardImage} source={require("../../../images/card_background_img.png")}/>
-                <View style={styles.overlay}></View>
-                <View style={styles.balanceInfo}>
-                    <View style={styles.balanceLineOne}>
-                        <Text style={styles.balanceTitle}>Balance</Text>
-                        <TouchableOpacity>
-                            <View style={styles.iconView}>
-                                <Icon5 name='fingerprint' color={'#F6A721'} size={15}></Icon5>
+            {!cardClicked && 
+                <View>
+                    <TouchableOpacity onPress={handleCardClick}>
+                        <View style={styles.secondSection}>
+                            <Image style={styles.cardImage} source={require("../../../images/card_background_img.png")}/>
+                            <View style={styles.overlay}></View>
+                            <View style={styles.balanceInfo}>
+                                <View style={styles.balanceLineOne}>
+                                    <Text style={styles.balanceTitle}>Balance</Text>
+                                    <TouchableOpacity>
+                                        <View style={styles.iconView}>
+                                            <Icon5 name='fingerprint' color={'#F6A721'} size={15}></Icon5>
+                                        </View>
+                                    </TouchableOpacity>
+                                </View>
+                                <Text style={styles.balanceLineTwo}>${props.currentBalance}</Text>
                             </View>
-                        </TouchableOpacity>
-                    </View>
-                    <Text style={styles.balanceLineTwo}>${props.currentBalance}</Text>
-                </View>
-            </View>
-
-            <View style={styles.thirdSection}>
-                <IconCard cardText='Accounts' 
-                          backgroundColor='#00C97426' 
-                          icon={<Icon5 name='money-bill-wave' size={24} style={{color: '#00C974', backgroundColor: 'transparent'}}/>}/>
-                <IconCard cardText='Cards' 
-                          backgroundColor='#00ADF826' 
-                          icon={<Icon5 name='credit-card' size={24} style={{color: '#00ADF8', backgroundColor: 'transparent'}}/>}/>
-                <IconCard cardText='Utilities' 
-                          backgroundColor='#F6A72126' 
-                          icon={<Icon5 name='faucet' size={24} style={{color: '#F6A721', backgroundColor: 'transparent'}}/>}/>
-                <IconCard cardText='History' 
-                          backgroundColor='#FF002E26' 
-                          icon={<AntDesignIcon name='filetext1' size={24} style={{color: '#FF002E', backgroundColor: 'transparent'}}/>}/>
-            </View>
-
-            <View style={styles.fourthSection}>
-                <View style={styles.fourthSectionLineOne}>
-                    <Text style={styles.fourthSectionTextOne}>Send money</Text>
-                    <TouchableOpacity>
-                        <Text style={styles.fourthSectionTextTwo}>View All</Text>
+                        </View>
                     </TouchableOpacity>
-                </View>
-                <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.scrollContentContainer}>
-                    {userInformation.map((item, index)=> (
-                        <UserCard key={index} 
-                                  username={item.name} 
-                                  imageUrl={item.image} 
-                                  imageStyle='contain'
-                                  marginRight={10}/>
-                    ))}
-                </ScrollView>
-            </View>
 
+                    <View style={styles.thirdSection}>
+                        <IconCard cardText='Accounts' 
+                                backgroundColor='#00C97426' 
+                                darkMode={darkMode}
+                                icon={<Icon5 name='money-bill-wave' size={24} style={{color: '#00C974', backgroundColor: 'transparent'}}/>}/>
+                        <IconCard cardText='Cards' 
+                                backgroundColor='#00ADF826' 
+                                darkMode={darkMode}
+                                icon={<Icon5 name='credit-card' size={24} style={{color: '#00ADF8', backgroundColor: 'transparent'}}/>}/>
+                        <IconCard cardText='Utilities' 
+                                backgroundColor='#F6A72126' 
+                                darkMode={darkMode}
+                                icon={<Icon5 name='faucet' size={24} style={{color: '#F6A721', backgroundColor: 'transparent'}}/>}/>
+                        <IconCard cardText='History' 
+                                backgroundColor='#FF002E26' 
+                                darkMode={darkMode}
+                                icon={<AntDesignIcon name='filetext1' size={24} style={{color: '#FF002E', backgroundColor: 'transparent'}}/>}/>
+                    </View>
+
+                    <View style={styles.fourthSection}>
+                        <View style={styles.fourthSectionLineOne}>
+                            <Text style={[styles.fourthSectionTextOne, darkMode ? styles.darkModeText : styles.normalModeText]}>Send money</Text>
+                            <TouchableOpacity>
+                                <Text style={[styles.fourthSectionTextTwo, darkMode ? styles.darkModeText : {color: "#808080"}]}>View All</Text>
+                            </TouchableOpacity>
+                        </View>
+                        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.scrollContentContainer}>
+                            {userInformation.map((item, index)=> (
+                                <UserCard key={index} 
+                                        username={item.name} 
+                                        imageUrl={item.image} 
+                                        imageStyle='contain'
+                                        marginRight={10}/>
+                            ))}
+                        </ScrollView>
+                    </View>
+                </View>
+            }
+
+            {cardClicked &&  
+                <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.horizontalScrollContent}>
+                        <VisaCard   color='green'  
+                                    balance='125,381.15' 
+                                    lastDigits='6506'
+                                    cardHolder='Ahmad Sami Al-sayed'
+                                    expiryDate='08/25'
+                                    cvv='352'
+                                    />
+                        <VisaCard   color='red' 
+                                    balance='18,631.15' 
+                                    lastDigits='8154'
+                                    cardHolder='Arwa Mohamed'
+                                    expiryDate='11/27'
+                                    cvv='781'
+                                    />
+                </ScrollView>
+            }
             <View style={styles.fifthSection}>
                 <View style={styles.fifthSectionLineOne}>
-                    <Text style={styles.fifthSectionTextOne}>History</Text>
+                    <Text style={[styles.fifthSectionTextOne, darkMode ? styles.darkModeText : styles.normalModeText]}>History</Text>
                     <TouchableOpacity>
-                        <Text style={styles.fifthSectionTextTwo}>View All</Text>
+                        <Text style={[styles.fifthSectionTextTwo, darkMode ? styles.darkModeText : {color: "#808080"}]}>View All</Text>
                     </TouchableOpacity>
                 </View>
                 
@@ -155,7 +194,8 @@ import {
                                      price={item.price}
                                      imageUrl={item.image}
                                      shop={item.type=='shop' ? true : false}
-                                     marginBottom={5}/>
+                                     marginBottom={5}
+                                     darkMode={darkMode}/>
                         </TouchableOpacity>
                     ))}
                 
@@ -170,6 +210,18 @@ import {
     container: {
         flex:1,
         backgroundColor: '#F1F3FB',
+    },
+    darkModeBackground:{
+        backgroundColor: '#2E2E2E',
+    },
+    normalModeBackground: {
+        backgroundColor: '#F1F3FB',
+    },
+    darkModeText:{
+        color: 'white',
+    },
+    normalModeText: {
+        color: "#1C2437",
     },
     secondSection:{
         marginTop: 20,      
@@ -273,7 +325,10 @@ import {
     verticalScrollView: {
         flexGrow: 1,
         paddingHorizontal: 25
-    }
+    },
+    horizontalScrollContent: {
+        paddingVertical: 15,
+    },
   })
 
   export default Home;

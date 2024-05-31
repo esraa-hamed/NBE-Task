@@ -10,7 +10,8 @@ import FontistoIcon from 'react-native-vector-icons/Fontisto';
 interface IconCardProps {
     cardText: string,
     backgroundColor: string,
-    icon: React.ReactNode
+    icon: React.ReactNode;
+    darkMode: boolean;
 }
 
 function IconCard(props: IconCardProps): React.JSX.Element {
@@ -21,7 +22,7 @@ function IconCard(props: IconCardProps): React.JSX.Element {
                     {props.icon}
                 </View>
             </TouchableOpacity>
-            <Text style={styles.cardText}>{props.cardText}</Text>
+            <Text style={props.darkMode ? styles.cardTextDark : styles.cardText}>{props.cardText}</Text>
         </View>
     );
 }
@@ -40,6 +41,13 @@ const styles = StyleSheet.create({
     },
     cardText: {
         color: "#1C2437",
+        fontSize: 16,
+        fontWeight: '400',
+        textAlign: 'center',
+        marginTop: 3
+    },
+    cardTextDark: {
+        color: "#FFFF",
         fontSize: 16,
         fontWeight: '400',
         textAlign: 'center',

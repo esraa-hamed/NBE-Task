@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {
     Image,
     SafeAreaView,
@@ -8,8 +8,12 @@ import {
   } from 'react-native';
 
   import Button from '../../atoms/Button/Button';
+  import { ModeContext } from '../../../Context';
 
   function SignupSuccess({navigation}): React.JSX.Element {
+
+    const { darkMode } = useContext(ModeContext);
+    const { setDarkMode } = useContext(ModeContext);
 
     const handleFinishButtonClick = () => {
       navigation.navigate('HomeNavigation', {optionSelected: 1, firstName: 'Ahmed', imageUrl: 'https://firebasestorage.googleapis.com/v0/b/bank-task-7a340.appspot.com/o/home_user_image.png?alt=media&token=1d81fbc3-1b74-40aa-b977-2dfac6870d59', currentBalance:'2,374,654.25'});

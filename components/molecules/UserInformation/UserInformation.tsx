@@ -19,9 +19,7 @@ interface UserInfoProps {
 
 function UserInformation(props: UserInfoProps): React.JSX.Element {
     return(
-
-        <TouchableOpacity>
-                <View style={styles.infoContainer}>
+            <View style={styles.infoContainer}>
                 <Image source={{uri: props.imageUrl}} style={styles.infoImage}></Image>
                 <View style={styles.textView}>
                     <Text style={styles.headerText}>{props.username}</Text>
@@ -38,8 +36,7 @@ function UserInformation(props: UserInfoProps): React.JSX.Element {
                         <Text style={styles.balanceText}>{props.balance}</Text>
                     </View>
                 </View>
-                </View>
-        </TouchableOpacity>   
+            </View> 
     );
 }
 

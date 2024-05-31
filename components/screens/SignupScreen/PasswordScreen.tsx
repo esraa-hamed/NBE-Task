@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {
     StyleSheet,
     TouchableOpacity,
@@ -14,6 +14,7 @@ import {
   import EvilIcon from 'react-native-vector-icons/EvilIcons';
   import FontIcon from 'react-native-vector-icons/FontAwesome';
   import InputBox from '../../molecules/InputBox/InputBox';
+  import { ModeContext } from '../../../Context';
   function PasswordScreen({navigation}): React.JSX.Element {
 
     const [titleOneColor, setTitleOneColor] = useState('#B7B7B7');
@@ -32,6 +33,9 @@ import {
     const [containSpecialChar, setContainSpecialChar] = useState(false);
 
     const [submitButtonActive, setSubmitButtonActive] = useState(false);
+
+    const { darkMode } = useContext(ModeContext);
+    const { setDarkMode } = useContext(ModeContext);
      
     const handleGoingBack = () => {
 
@@ -139,7 +143,7 @@ import {
     }
 
     return(
-        <SafeAreaView style={styles.container}>
+        <SafeAreaView style={darkMode ? styles.containerDark : styles.container}>
 
         <View style={styles.signupFirstSection}>
             <TouchableOpacity onPress={handleGoingBack}>
@@ -154,7 +158,7 @@ import {
 
 
             <View style={styles.signupSecondSection}>
-                <Text style={styles.signupTitleOne}>Set your password</Text>
+                <Text style={darkMode ? styles.signupTitleOneDark : styles.signupTitleOne}>Set your password</Text>
                 <Text style={styles.signupTitleTwo}>Enter a strong password for your online banking account</Text>
                 <InputBox placeholder='Enter your password' isPassword={true} inputFocused={inputOneFocused} inputValue={inputOneValue} icon={<EvilIcon name="lock" size={42} color="#B7B7B7" style={{top:-6}}></EvilIcon>}
                         borderColor={'#007236'}
@@ -182,27 +186,27 @@ import {
                     <View style={styles.radioBtnFirstRow}>
                         <View style={styles.buttonTextView}>
                             <FontIcon name='circle' size={18} style={ containLowerCase ? {color: '#007236', borderColor: '#007236', top: 2} : {color: "#B7B7B7", borderColor: "#B7B7B7", top: 2}}/>
-                            <Text style={styles.checkText}>Lower case letter</Text>
+                            <Text style={darkMode ? styles.checkTextDark : styles.checkText}>Lower case letter</Text>
                         </View>
                         <View style={styles.buttonTextView}>
                             <FontIcon name='circle' size={18} style={ containUpperCase ? {color: '#007236', borderColor: '#007236', top: 2} : {color: "#B7B7B7", borderColor: "#B7B7B7", top: 2}}/>
-                            <Text style={styles.checkText}>Upper case letter</Text>
+                            <Text style={darkMode ? styles.checkTextDark : styles.checkText}>Upper case letter</Text>
                         </View>
                     </View>
                     <View style={styles.radioBtnSecondRow}>
                     <View style={styles.buttonTextView}>
                             <FontIcon name='circle' size={18} style={ containEightCharacters ? {color: '#007236', borderColor: '#007236', top: 2} : {color: "#B7B7B7", borderColor: "#B7B7B7", top: 2}}/>
-                            <Text style={styles.checkText}>Minimum 8 characters</Text>
+                            <Text style={darkMode ? styles.checkTextDark : styles.checkText}>Minimum 8 characters</Text>
                         </View>
                         <View style={ [styles.buttonTextView, {left:-63}]}>
                             <FontIcon name='circle' size={18} style={ containNumber ? {color: '#007236', borderColor: '#007236', top: 2} : {color: "#B7B7B7", borderColor: "#B7B7B7", top: 2}}/>
-                            <Text style={styles.checkText}>Number</Text>
+                            <Text style={darkMode ? styles.checkTextDark : styles.checkText}>Number</Text>
                         </View>
                     </View>
                     <View style={styles.radioBtnThirdRow}>
                         <View style={ styles.buttonTextView}>
                             <FontIcon name='circle' size={18} style={ containSpecialChar ? {color: '#007236', borderColor: '#007236', top: 2} : {color: "#B7B7B7", borderColor: "#B7B7B7", top: 2}}/>
-                            <Text style={styles.checkText}>Special character</Text>
+                            <Text style={darkMode ? styles.checkTextDark : styles.checkText}>Special character</Text>
                         </View>
                     </View>
                 </View>
@@ -228,6 +232,10 @@ import {
   const styles = StyleSheet.create({
     container: {
         backgroundColor: '#F1F3FB',
+        flex: 1,
+      },
+      containerDark: {
+        backgroundColor: '#2E2E2E',
         flex: 1,
       },
       signupFirstSection: {
@@ -267,6 +275,11 @@ import {
         fontSize: 29,
         fontWeight: '700',
       },
+      signupTitleOneDark: {
+        color: '#FFFF',
+        fontSize: 29,
+        fontWeight: '700',
+      },
       signupTitleTwo: {
         color: '#B7B7B7',
         fontSize: 16,
@@ -298,6 +311,11 @@ import {
         left: 10,
         fontSize: 16,
         color: '#1C2437'
+      },
+      checkTextDark: {
+        left: 10,
+        fontSize: 16,
+        color: '#FFFF'
       },
       radioBtnThirdRow: {
         marginHorizontal: 7,

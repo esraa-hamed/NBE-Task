@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {
     Image,
     SafeAreaView,
@@ -12,22 +12,32 @@ import {
   import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
   import IonIcon from 'react-native-vector-icons/Ionicons';
 
+  import { ModeContext } from '../../../Context';
+
   interface HeaderProps{
     firstName: string;
     imageUrl: string;
+    transparent: boolean;
+    onMenuPress: () => void;
+    // darkMode: boolean;
   }
 
   function Header(props: HeaderProps): React.JSX.Element {
+
+    const { darkMode } = useContext(ModeContext);
+    const { setDarkMode } = useContext(ModeContext);
+
+
     return(
-        <View style={styles.firstSection}>
+        <View style={[styles.firstSection, props.transparent ? {backgroundColor: 'transparent', zIndex: 3, position: 'absolute'} : (darkMode ? {backgroundColor: '#2E2E2E'} :{backgroundColor: '#F1F3FB'})]}>
                 <View style={styles.leftPart}>
-                    <TouchableOpacity>
-                        <MaterialIcon name='menu' size={25} color={"#000000"} style={{top: 10, right: 5}}/>
+                    <TouchableOpacity onPress={props.onMenuPress}>
+                        <MaterialIcon name='menu' size={25} color={darkMode ? "white" : "#000000"} style={{top: 10, right: 5}}/>
                     </TouchableOpacity>
                     <Image style={styles.userImage} source={{ uri: props.imageUrl }}></Image>
                     <View style={styles.userNameView}>
-                        <Text style={styles.userNameTextOne}>Good morning</Text>
-                        <Text style={styles.userNameTextTwo}>{props.firstName}</Text>
+                        <Text style={[styles.userNameTextOne, darkMode? styles.darkModeText : styles.normalModeText]}>Good morning</Text>
+                        <Text style={[styles.userNameTextTwo, darkMode? styles.darkModeText : styles.normalModeText]}>{props.firstName}</Text>
                     </View>
                 </View>
                 <View style={styles.rightPart}>
@@ -41,14 +51,15 @@ import {
 
   const styles = StyleSheet.create({
     firstSection: {
-        marginTop: 30,
+        // marginTop: 30,
+        paddingTop: 30,
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
         paddingHorizontal: 25,
-        backgroundColor: '#F1F3FB',
-       
+        width: '100%',
+        zIndex: 1,
     },
     leftPart: {
         display: 'flex',
@@ -78,6 +89,12 @@ import {
         width: 50,
         left: 2
     },
+    darkModeText:{
+        color: 'white',
+    },
+    normalModeText:{
+        color: 'black',
+    }
   })
 
   export default Header;

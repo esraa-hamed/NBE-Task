@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useContext, useEffect} from 'react';
 import {
     StyleSheet,
     TouchableOpacity,
@@ -13,12 +13,16 @@ import {
   import Icon from 'react-native-vector-icons/FontAwesome5';
   import InputBox from '../../molecules/InputBox/InputBox';
   import Button from '../../atoms/Button/Button';
+  import { ModeContext } from '../../../Context';
 
   function SignupScreen({navigation}): React.JSX.Element {
     const [inputFocused, setInputFocused] = useState(false);
     const [inputValue, setInputValue] = useState('')
     const [titleColor, setTitleColor] = useState('#B7B7B7');
     const [buttonActive, setButtonActive] = useState(false);
+
+    const { darkMode } = useContext(ModeContext);
+    const { setDarkMode } = useContext(ModeContext);
 
     const handleInputFocus = () => {
       setInputFocused(true);
@@ -39,15 +43,15 @@ import {
     }
 
     const handleGoingBack = () => {
-
+      navigation.navigate('Login');
     }
 
     const handleNextButtonClick = () =>{
-      navigation.navigate('Verification', {mobileNumber: inputValue});
+      navigation.navigate('Verification', {mobileNumber: inputValue, parentName: 'Signup'});
     }
 
     return(
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={darkMode ? styles.containerDark : styles.container}>
 
         <View style={styles.signupFirstSection}>
             <TouchableOpacity onPress={handleGoingBack}>
@@ -60,7 +64,7 @@ import {
 
         <View style={styles.mainContainer}>
             <View style={styles.signupSecondSection}>
-              <Text style={styles.signupTitleOne}>Mobile number</Text>
+              <Text style={darkMode ? styles.signupTitleOneDark : styles.signupTitleOne}>Mobile number</Text>
               <Text style={styles.signupTitleTwo}>Enter the mobile number registred in the bank</Text>
               <InputBox placeholder='Enter your mobile number' isPassword={false} inputFocused={inputFocused} inputValue={inputValue} icon={<Icon name="mobile-alt" size={28} color="#B7B7B7"></Icon>}
                         borderColor={'#007236'}
@@ -78,7 +82,7 @@ import {
 
             <View style={styles.nextButtonView}>
                 <Button title='Next' fontColor='white' backgroundColor='#007236' onPress={handleNextButtonClick} active={buttonActive} padding={13}></Button>
-                <Text style={styles.footerText}>
+                <Text style={darkMode ? styles.footerTextDark : styles.footerText}>
                   <Text style={styles.footerTextNormal}>By signing up, you agree to our </Text> 
                   <Text style={styles.footerTextBold}>Terms of Service </Text> 
                   <Text style={styles.footerTextNormal}>and acknowledge that you have read our</Text> 
@@ -96,6 +100,10 @@ import {
   const styles = StyleSheet.create({
     container: {
       backgroundColor: '#F1F3FB',
+      flex: 1,
+    },
+    containerDark: {
+      backgroundColor: '#2E2E2E',
       flex: 1,
     },
     signupFirstSection: {
@@ -135,6 +143,11 @@ import {
       fontSize: 29,
       fontWeight: '700',
     },
+    signupTitleOneDark: {
+      color: '#FFFF',
+      fontSize: 29,
+      fontWeight: '700',
+    },
     signupTitleTwo: {
       color: '#B7B7B7',
       fontSize: 15,
@@ -148,6 +161,12 @@ import {
       marginTop: 20,
       fontSize: 14,
       marginLeft: 10,
+    },
+    footerTextDark: {
+      marginTop: 20,
+      fontSize: 14,
+      marginLeft: 10,
+      color: '#B7B7B7'
     },
     footerTextNormal: {
       fontWeight: '400'

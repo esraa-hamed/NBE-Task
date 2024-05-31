@@ -18,12 +18,10 @@ interface UserCardProps {
 function UserCard(props: UserCardProps): React.JSX.Element {
     return(
         <View style={ [styles.container, {marginRight: props.marginRight}]}>
-            <TouchableOpacity>
                 <View style={props.imageStyle=='contain' ? styles.cardContain : styles.cardCover}>
                 <Image source={{uri: props.imageUrl}} style={props.imageStyle=='contain' ? styles.imageContain : styles.imageCover}></Image>
                 <Text style={styles.cardText}>{props.username}</Text>
                 </View>
-            </TouchableOpacity>   
         </View>
     );
 }

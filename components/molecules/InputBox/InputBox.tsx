@@ -45,9 +45,9 @@ function InputBox(props: InputBoxProps): React.JSX.Element {
                   </View>
             )}
             { titleTop ? (
-                <View style={styles.textInputView}>
+                <View style={props.icon ? styles.textInputView : styles.textInputViewNoIcon}>
                     <Text style={[styles.textTop, {color: titleColor}]}>{props.titleTop}</Text>
-                    <View style={styles.viewRow}>
+                    <View style={props.icon ? styles.viewRow : styles.viewRowNoIcon}>
                       <TextInput 
                       placeholder={ props.inputFocused || props.inputValue ? '' : props.placeholder}
                       style={ [styles.inputTopStyle, {color: fontColor}]} 
@@ -110,6 +110,11 @@ const styles = StyleSheet.create({
         left: 0,
         width: '80%',
       },
+      textInputViewNoIcon: {
+        fontSize: 20,
+        left: 20,
+        width: '90%',
+      },
       iconView:  {
         width: '20%',
         display: 'flex',
@@ -133,7 +138,8 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between'
-      }
+      },
+     
 })
 
 export default InputBox;
