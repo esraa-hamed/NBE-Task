@@ -192,8 +192,6 @@ function SideMenu(props: SideMenuProps): React.JSX.Element {
 
 const styles = StyleSheet.create({
     menuView: {
-        // position: 'absolute',
-        // zIndex: 3,
         backgroundColor: '#F1F3FB',
         flex: 1,
         width: 330,

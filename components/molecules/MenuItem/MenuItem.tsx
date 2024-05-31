@@ -37,10 +37,6 @@ function MenuItem(props: MenuItemProps): React.JSX.Element {
         setDarkMode(!darkMode);
     }
 
-    // useEffect(() => {
-    //     setToggleClicked(props.darkModeValue);
-    //   }, [props.darkModeValue]);
-
     return(
         <TouchableOpacity onPress={handleMenuItemClick} disabled={props.darkModeOption}>
             <View style={itemClicked ? styles.menuItemContainerClicked : styles.menuItemContainer}>
